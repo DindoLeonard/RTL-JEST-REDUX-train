@@ -1,6 +1,8 @@
-/* eslint-disable testing-library/no-node-access */
+import React from 'react';
 import SignUpPage from './SignUpPage';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import axios from 'axios';
 
 describe('Sign Up Page', () => {
   describe('Layout', () => {
@@ -78,6 +80,57 @@ describe('Sign Up Page', () => {
       render(<SignUpPage />);
       const button = screen.queryByRole('button', { name: /sign up/i });
       expect(button).toBeDisabled();
+    });
+  });
+
+  describe('interactions', () => {
+    it('enables button when password and passwordrepeat input has the same value', () => {
+      render(<SignUpPage />);
+
+      const passwordInput = screen.getByLabelText('Password');
+      const passwordRepeatInput = screen.getByLabelText(/password repeat/i);
+
+      userEvent.type(passwordInput, 'P4ssword');
+      userEvent.type(passwordRepeatInput, 'P4ssword');
+
+      const button = screen.queryByRole('button', { name: /sign up/i });
+      expect(button).toBeEnabled();
+    });
+
+    it('sends username, email and password to backend after clicking the button', async () => {
+      render(<SignUpPage />);
+
+      const usernameInput = screen.getByLabelText('Username');
+      const emailInput = screen.getByLabelText('E-mail');
+      const passwordInput = screen.getByLabelText('Password');
+      const passwordRepeatInput = screen.getByLabelText(/password repeat/i);
+      userEvent.type(usernameInput, 'user1');
+      userEvent.type(emailInput, 'user1@mail.com');
+      userEvent.type(passwordInput, 'P4ssword');
+      userEvent.type(passwordRepeatInput, 'P4ssword');
+
+      const button = screen.getByRole('button', { name: /sign up/i });
+      expect(button).toBeEnabled();
+
+      const mockFn = jest.fn();
+      axios.post = mockFn;
+
+      if (!button) return;
+
+      userEvent.click(button);
+
+      // mock the first call of axios
+      const firstCallOfMockFunction = mockFn.mock.calls[0];
+
+      // axios.post(<0>,<1>) === axios.post('http://...', body)
+      // getting the body of the axios mock
+      const body = firstCallOfMockFunction[1];
+
+      expect(body).toEqual({
+        username: 'user1',
+        email: 'user1@mail.com',
+        password: 'P4ssword',
+      });
     });
   });
 });
