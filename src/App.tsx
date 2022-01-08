@@ -3,7 +3,7 @@ import SignUpPage from './pages/SignUpPage';
 
 function App(): React.ReactElement {
   return (
-    <div>
+    <div className="container">
       <SignUpPage />
     </div>
   );

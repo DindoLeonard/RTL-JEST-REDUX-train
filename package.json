@@ -41,6 +41,8 @@
     "eslint": "^8.6.0",
     "eslint-plugin-jest-dom": "^4.0.1",
     "eslint-plugin-react": "^7.28.0",
-    "eslint-plugin-testing-library": "^5.0.1"
-  }
+    "eslint-plugin-testing-library": "^5.0.1",
+    "msw": "^0.36.3"
+  },
+  "proxy": "http://localhost:8080"
 }
