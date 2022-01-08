@@ -1,9 +1,11 @@
-import axios from 'axios';
 import React from 'react';
 import Input from '../components/Input';
+import { withTranslation } from 'react-i18next';
+import { signUp } from '../api/apiCalls';
 
 class SignUpPage extends React.Component<
-  { children?: React.ReactElement },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  { children?: React.ReactElement; t: any; i18n: any },
   {
     username: string;
     email: string;
@@ -57,11 +59,9 @@ class SignUpPage extends React.Component<
     this.setState({ apiProgress: true });
 
     try {
-      await axios.post('/api/1.0/users', {
-        username,
-        email,
-        password,
-      });
+      const body = { username, email, password };
+
+      await signUp(body);
 
       this.setState({ signUpSuccess: true });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -84,6 +84,7 @@ class SignUpPage extends React.Component<
   };
 
   render() {
+    const { t } = this.props;
     const { password, passwordRepeat, apiProgress, signUpSuccess, errors } =
       this.state;
 
@@ -94,37 +95,37 @@ class SignUpPage extends React.Component<
     }
 
     const passwordMismatch =
-      password !== passwordRepeat ? 'Password mismatch' : '';
+      password !== passwordRepeat ? t('passwordMismatchValidation') : '';
 
     return (
       <div className="col-lg-6  offset-lg-3 col-md-8 offset-md-2">
         {!signUpSuccess && (
           <form className="card mt-5 " data-testid="form-sign-up">
             <div className="card-header">
-              <h1 className="text-center">Sign Up</h1>
+              <h1 className="text-center">{t('signUp')}</h1>
             </div>
             <div className="card-body">
               <Input
-                label="Username"
+                label={t('username')}
                 id="username"
                 onChange={this.onChangeUsername}
                 help={errors.username}
               />
               <Input
-                label="E-mail"
+                label={t('email')}
                 id="email"
                 onChange={this.onChangeEmail}
                 help={errors.email}
               />
               <Input
-                label="Password"
+                label={t('password')}
                 id="password"
                 onChange={this.onChangePassword}
                 help={errors.password}
                 type="password"
               />
               <Input
-                label="Password Repeat"
+                label={t('passwordRepeat')}
                 id="password repeat"
                 onChange={this.onChangePasswordRepeat}
                 help={passwordMismatch}
@@ -155,7 +156,7 @@ class SignUpPage extends React.Component<
                       aria-hidden="true"
                     ></span>
                   )}
-                  Sign up
+                  {t('signUp')}
                 </button>
               </div>
             </div>
@@ -171,4 +172,6 @@ class SignUpPage extends React.Component<
   }
 }
 
-export default SignUpPage;
+const SignUpPageWithTranslation = withTranslation()(SignUpPage);
+
+export default SignUpPageWithTranslation;

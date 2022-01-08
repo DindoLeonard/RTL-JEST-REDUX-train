@@ -1,0 +1,8 @@
+{
+  "signUp": "Mag sign up",
+  "username": "Username",
+  "email": "E-mail",
+  "password": "Hudyat",
+  "passwordRepeat": "Hudyat Ulit",
+  "passwordMismatchValidation": "Hudyat ay di tugma"
+}
