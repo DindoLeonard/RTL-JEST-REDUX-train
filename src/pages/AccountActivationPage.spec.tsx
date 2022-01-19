@@ -1,5 +1,11 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import {
+  getByRole,
+  queryByRole,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import AccountActivationPage from './AccountActivationPage';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { setupServer } from 'msw/node';
@@ -12,11 +18,13 @@ const server = setupServer(
   rest.post<{ name: string; email: string; password: string }>(
     '/api/1.0/users/token/:token',
     (req, res, ctx) => {
+      counter += 1;
+
       const { token } = req.params;
       if (token === '5678') {
         return res(ctx.status(400));
       }
-      counter += 1;
+
       return res(ctx.json(200));
     }
   )
@@ -68,5 +76,93 @@ describe('AccountActivationPage', () => {
 
     const message = await screen.findByText('Activation failure');
     expect(message).toBeInTheDocument();
+  });
+
+  it('sends activation request after the token is changed', async () => {
+    let token = '1234';
+    const { rerender } = render(
+      <MemoryRouter
+        initialEntries={['/activation-page/' + token]}
+        initialIndex={0}
+      >
+        <Routes>
+          <Route
+            path={'/activation-page/:token'}
+            element={<AccountActivationPage />}
+          />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    await screen.findByText('Account is activated');
+
+    expect(counter).toBe(1);
+
+    token = ' 5678';
+
+    rerender(
+      <MemoryRouter>
+        <Routes location={{ pathname: '/activation-page/' + token }}>
+          <Route
+            path={'/activation-page/:token'}
+            element={<AccountActivationPage />}
+          />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      screen.queryByText('Activation failure');
+      expect(counter).toBe(2);
+    });
+  });
+
+  it('displays spinner during activation api call', async () => {
+    setup('5678');
+    const spinner = screen.queryByTestId('spinner-loading');
+    expect(spinner).toBeInTheDocument();
+    await screen.findByText('Activation failure');
+    expect(spinner).not.toBeInTheDocument();
+  });
+
+  it('displays spinner after second api call to change the token', async () => {
+    let token = '1234';
+    const { rerender } = render(
+      <MemoryRouter
+        initialEntries={['/activation-page/' + token]}
+        initialIndex={0}
+      >
+        <Routes>
+          <Route
+            path={'/activation-page/:token'}
+            element={<AccountActivationPage />}
+          />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    await screen.findByText('Account is activated');
+
+    expect(counter).toBe(1);
+
+    token = ' 5678';
+
+    rerender(
+      <MemoryRouter>
+        <Routes location={{ pathname: '/activation-page/' + token }}>
+          <Route
+            path={'/activation-page/:token'}
+            element={<AccountActivationPage />}
+          />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    const spinner = screen.queryByTestId('spinner-loading');
+    expect(spinner).toBeInTheDocument();
+    await waitFor(() => {
+      screen.queryByText('Activation failure');
+      expect(spinner).not.toBeInTheDocument();
+    });
   });
 });

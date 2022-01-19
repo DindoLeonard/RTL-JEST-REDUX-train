@@ -2,6 +2,8 @@ import React from 'react';
 import Input from '../components/Input';
 import { withTranslation } from 'react-i18next';
 import { signUp } from '../api/apiCalls';
+import Alert from '../components/Alert';
+import Spinner from '../components/Spinner';
 
 class SignUpPage extends React.Component<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -103,7 +105,7 @@ class SignUpPage extends React.Component<
         data-testid="signup-page"
       >
         {!signUpSuccess && (
-          <form className="card mt-5 " data-testid="form-sign-up">
+          <form className="card " data-testid="form-sign-up">
             <div className="card-header">
               <h1 className="text-center">{t('signUp')}</h1>
             </div>
@@ -153,11 +155,12 @@ class SignUpPage extends React.Component<
                   className="btn btn-primary"
                 >
                   {apiProgress && (
-                    <span
-                      className="spinner-border spinner-border-sm"
-                      role="status"
-                      aria-hidden="true"
-                    ></span>
+                    // <span
+                    //   className="spinner-border spinner-border-sm"
+                    //   role="status"
+                    //   aria-hidden="true"
+                    // ></span>
+                    <Spinner />
                   )}
                   {t('signUp')}
                 </button>
@@ -166,9 +169,12 @@ class SignUpPage extends React.Component<
           </form>
         )}
         {signUpSuccess && (
-          <div className="alert alert-success mt-3">
+          <Alert
+          // type="success"
+          // text="Please check your e-mail to activate your account"
+          >
             Please check your e-mail to activate your account
-          </div>
+          </Alert>
         )}
       </div>
     );

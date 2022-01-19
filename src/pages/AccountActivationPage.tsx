@@ -1,34 +1,53 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { activate } from '../api/apiCalls';
+import Alert from '../components/Alert';
+import Spinner from '../components/Spinner';
 useParams;
 
 const AccountActivationPage = (): React.ReactElement => {
-  const [result, setResult] = useState<string>();
+  const [result, setResult] = useState<string | undefined>();
   const { token } = useParams();
 
   useEffect(() => {
-    if (token) {
-      activate(token)
-        .then(() => {
-          setResult('success');
-        })
-        .catch(() => {
-          setResult('fail');
-        });
-    }
-  }, []);
+    let mounted = true;
+    async function activateRequest() {
+      try {
+        setResult(undefined);
 
-  return (
-    <div data-testid="activation-page">
-      {result === 'success' && (
-        <div className="alert alert-success mt-3">Account is activated</div>
-      )}
-      {result === 'fail' && (
-        <div className="alert alert-danger mt-3">Activation failure</div>
-      )}
-    </div>
+        if (token) {
+          await activate(token);
+          if (mounted) {
+            setResult('success');
+          }
+        }
+      } catch (e) {
+        if (mounted) {
+          setResult('fail');
+        }
+      }
+    }
+
+    activateRequest();
+    return () => {
+      mounted = false;
+    };
+  }, [token]);
+
+  let content = (
+    // <div className="alert alert-secondary text-center">
+    <Alert type="secondary" center>
+      <Spinner size="big" />
+    </Alert>
   );
+
+  if (result === 'success') {
+    content = <Alert type="success">Account is activated</Alert>;
+  } else if (result === 'fail') {
+    content = <Alert type="danger">Activation failure</Alert>;
+  }
+
+  return <div data-testid="activation-page">{content}</div>;
 };
 
 export default AccountActivationPage;

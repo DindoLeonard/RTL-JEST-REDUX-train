@@ -48,7 +48,7 @@ function App(): React.ReactElement {
           </ul>
         </div>
       </nav>
-      <div className="container">
+      <div className="container pt-3">
         <Routes>
           <Route path="/*" element={<HomePage />} />
           <Route path="/signup" element={<SignUpPage />} />
