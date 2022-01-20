@@ -19,7 +19,7 @@ export const activate = (token: string) => {
   return axios.post('/api/1.0/users/token/' + token);
 };
 
-export const loadUsers = () => {
+export const loadUsers = (page?: number) => {
   return axios.get<{
     content: {
       id: number;
@@ -30,5 +30,5 @@ export const loadUsers = () => {
     page: number;
     size: number;
     totalPages: number;
-  }>('/api/1.0/users', { params: { page: 0, size: 3 } });
+  }>('/api/1.0/users', { params: { page: page || 0, size: 3 } });
 };

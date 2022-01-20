@@ -27,19 +27,40 @@ class UserList extends React.Component<
   };
 
   componentDidMount() {
-    loadUsers().then((response) => {
-      this.setState({ page: response.data });
-    });
+    this.loadData();
   }
 
+  loadData = async (pageIndex?: number) => {
+    try {
+      const response = await loadUsers(pageIndex);
+      this.setState({ page: response.data });
+    } catch (e) {
+      //
+    }
+  };
+
+  // loadNext = () => {
+  //   loadUsers(this.state.page.page + 1).then((response) => {
+  //     this.setState({ page: response.data });
+  //   });
+  // };
+
+  // loadPrevious = () => {
+  //   loadUsers(this.state.page.page - 1).then((response) => {
+  //     this.setState({ page: response.data });
+  //   });
+  // };
+
   render() {
+    const { totalPages, page, content } = this.state.page;
+
     return (
       <div className="card">
         <div className="card-header text-center">
           <h3>Users</h3>
         </div>
         <ul className="list-group list-group-flush">
-          {this.state.page.content.map(
+          {content.map(
             (user: {
               id: number;
               username: string;
@@ -57,6 +78,28 @@ class UserList extends React.Component<
             }
           )}
         </ul>
+        <div className="card-footer">
+          {page !== 0 && (
+            <button
+              className="btn btn-outline-secondary btn-sm"
+              onClick={() => {
+                this.loadData(page - 1);
+              }}
+            >
+              &lt; previous
+            </button>
+          )}
+          {totalPages > page + 1 && (
+            <button
+              className="btn btn-outline-secondary btn-sm"
+              onClick={() => {
+                this.loadData(page + 1);
+              }}
+            >
+              {'next >'}
+            </button>
+          )}
+        </div>
       </div>
     );
   }
