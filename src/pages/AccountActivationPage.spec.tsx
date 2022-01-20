@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  getByRole,
-  queryByRole,
-  render,
-  screen,
-  waitFor,
-} from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import AccountActivationPage from './AccountActivationPage';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { setupServer } from 'msw/node';

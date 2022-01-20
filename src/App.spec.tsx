@@ -12,7 +12,18 @@ const server = setupServer(
     (req, res, ctx) => {
       return res(ctx.json(200));
     }
-  )
+  ),
+  rest.get('/api/1.0/users', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        content: [],
+        page: 0,
+        size: 0,
+        totalPages: 0,
+      })
+    );
+  })
 );
 
 beforeAll(() => {
