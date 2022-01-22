@@ -4,6 +4,7 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 import UserList from './UserList';
 import userEvent from '@testing-library/user-event';
+import { BrowserRouter } from 'react-router-dom';
 
 const users = [
   {
@@ -94,16 +95,24 @@ beforeEach(() => {
   server.resetHandlers();
 });
 
+const setup = () => {
+  render(
+    <BrowserRouter>
+      <UserList />
+    </BrowserRouter>
+  );
+};
+
 describe('User List', () => {
   it('display three users in list', async () => {
-    render(<UserList />);
+    setup();
 
     const users = await screen.findAllByText(/user/);
     expect(users.length).toBe(3);
   });
 
   it('displays next page link', async () => {
-    render(<UserList />);
+    setup();
 
     const user1 = await screen.findByText('user1');
     expect(user1).toBeInTheDocument();
@@ -114,7 +123,7 @@ describe('User List', () => {
   });
 
   it('displays next page after clicking next', async () => {
-    render(<UserList />);
+    setup();
 
     const user1 = await screen.findByText('user1');
     expect(user1).toBeInTheDocument();
@@ -126,7 +135,7 @@ describe('User List', () => {
   });
 
   it('hides next page link after last page', async () => {
-    render(<UserList />);
+    setup();
 
     const user1 = await screen.findByText('user1');
     expect(user1).toBeInTheDocument();
@@ -144,7 +153,7 @@ describe('User List', () => {
   });
 
   it('does not display the previous page link in the first page', async () => {
-    render(<UserList />);
+    setup();
     const user1 = await screen.findByText('user1');
     expect(user1).toBeInTheDocument();
 
@@ -153,7 +162,7 @@ describe('User List', () => {
   });
 
   it('displays the previous page link in the second page', async () => {
-    render(<UserList />);
+    setup();
     await screen.findByText('user1');
 
     const nextPageLink = screen.getByText('next >');
@@ -168,7 +177,7 @@ describe('User List', () => {
   });
 
   it('displays the previous page after clicking the previous page link', async () => {
-    render(<UserList />);
+    setup();
 
     const user1 = await screen.findByText('user1');
     expect(user1).toBeInTheDocument();

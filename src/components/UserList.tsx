@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { loadUsers } from '../api/apiCalls';
 
 class UserList extends React.Component<
@@ -72,7 +73,7 @@ class UserList extends React.Component<
                   className="list-group-item list-group-item-action"
                   key={user.id}
                 >
-                  {user.username}
+                  <Link to={`user/${user.id}`}>{user.username}</Link>
                 </li>
               );
             }
