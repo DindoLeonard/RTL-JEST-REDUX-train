@@ -1,9 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { withTranslation } from 'react-i18next';
+// import { Link } from 'react-router-dom';
 import { loadUsers } from '../api/apiCalls';
+import Spinner from './Spinner';
+import UserListItem from './UserListItem';
 
 class UserList extends React.Component<
-  { children?: React.ReactElement },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  { children?: React.ReactElement; t: any; i18n: any },
   {
     page: {
       content: {
@@ -16,6 +20,7 @@ class UserList extends React.Component<
       size: number;
       totalPages: number;
     };
+    pendingApiCall: boolean;
   }
 > {
   state = {
@@ -25,6 +30,7 @@ class UserList extends React.Component<
       size: 0,
       totalPages: 0,
     },
+    pendingApiCall: false,
   };
 
   componentDidMount() {
@@ -32,12 +38,16 @@ class UserList extends React.Component<
   }
 
   loadData = async (pageIndex?: number) => {
+    this.setState({ pendingApiCall: true });
     try {
       const response = await loadUsers(pageIndex);
-      this.setState({ page: response.data });
+      const page = response.data;
+
+      this.setState({ page: page });
     } catch (e) {
       //
     }
+    this.setState({ pendingApiCall: false });
   };
 
   // loadNext = () => {
@@ -53,12 +63,14 @@ class UserList extends React.Component<
   // };
 
   render() {
+    const { pendingApiCall } = this.state;
     const { totalPages, page, content } = this.state.page;
+    const { t } = this.props;
 
     return (
       <div className="card">
         <div className="card-header text-center">
-          <h3>Users</h3>
+          <h3>{t('users')}</h3>
         </div>
         <ul className="list-group list-group-flush">
           {content.map(
@@ -69,41 +81,45 @@ class UserList extends React.Component<
               image: string | null;
             }) => {
               return (
-                <li
-                  className="list-group-item list-group-item-action"
-                  key={user.id}
-                >
-                  <Link to={`user/${user.id}`}>{user.username}</Link>
-                </li>
+                // <li
+                //   className="list-group-item list-group-item-action"
+                //   key={user.id}
+                // >
+                //   <Link to={`user/${user.id}`}>{user.username}</Link>
+                // </li>
+                <UserListItem user={user} key={user.id} />
               );
             }
           )}
         </ul>
         <div className="card-footer">
-          {page !== 0 && (
+          {page !== 0 && !pendingApiCall && (
             <button
-              className="btn btn-outline-secondary btn-sm"
+              className="btn btn-outline-secondary btn-sm float-start"
               onClick={() => {
                 this.loadData(page - 1);
               }}
             >
-              &lt; previous
+              {/* &lt; previous */}
+              {t('previousPage')}
             </button>
           )}
-          {totalPages > page + 1 && (
+          {totalPages > page + 1 && !pendingApiCall && (
             <button
-              className="btn btn-outline-secondary btn-sm"
+              className="btn btn-outline-secondary btn-sm float-end"
               onClick={() => {
                 this.loadData(page + 1);
               }}
             >
-              {'next >'}
+              {/* {'next >'} */}
+              {t('nextPage')}
             </button>
           )}
+          {pendingApiCall && <Spinner />}
         </div>
       </div>
     );
   }
 }
 
-export default UserList;
+export default withTranslation()(UserList);

@@ -4,5 +4,8 @@
   "email": "E-mail",
   "password": "Hudyat",
   "passwordRepeat": "Hudyat Ulit",
-  "passwordMismatchValidation": "Hudyat ay di tugma"
+  "passwordMismatchValidation": "Hudyat ay di tugma",
+  "users": "Users",
+  "nextPage": "sunod >",
+  "previousPage": "< bumalik"
 }

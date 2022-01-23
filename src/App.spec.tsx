@@ -134,6 +134,10 @@ describe('Routing', () => {
 
   it('navigates to user page when clicking the user link', async () => {
     setup('/');
+    // await waitFor(() => {
+    //   const user = screen.queryByText('user-in-list');
+    //   expect(user).toBeInTheDocument();
+    // });
     const user = await screen.findByText('user-in-list');
     expect(user).toBeInTheDocument();
 
