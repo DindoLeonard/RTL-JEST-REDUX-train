@@ -32,3 +32,12 @@ export const loadUsers = (page?: number) => {
     totalPages: number;
   }>('/api/1.0/users', { params: { page: page || 0, size: 3 } });
 };
+
+export const getUserById = (id: string) => {
+  return axios.get<{
+    id: number;
+    username: string;
+    email: string;
+    image: string | null;
+  }>(`/api/1.0/users/${id}`);
+};
