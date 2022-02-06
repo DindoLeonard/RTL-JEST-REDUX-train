@@ -41,3 +41,7 @@ export const getUserById = (id: string) => {
     image: string | null;
   }>(`/api/1.0/users/${id}`);
 };
+
+export const login = (body: { email: string; password: string }) => {
+  return axios.post('/api/1.0/auth', body);
+};
