@@ -43,6 +43,9 @@ const server = setupServer(
         image: null,
       })
     );
+  }),
+  rest.post('/api/1.0/auth', (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json({ username: 'user5' }));
   })
 );
 
@@ -58,12 +61,12 @@ beforeEach(() => {
   server.resetHandlers();
 });
 
-describe('Routing', () => {
-  const setup = (path: string) => {
-    window.history.pushState({}, '', path);
-    render(<App />);
-  };
+const setup = (path: string) => {
+  window.history.pushState({}, '', path);
+  render(<App />);
+};
 
+describe('Routing', () => {
   it.each`
     path               | pageTestId
     ${'/'}             | ${'home-page'}
@@ -157,6 +160,22 @@ describe('Routing', () => {
     userEvent.click(user);
     const userPage = screen.queryByTestId('user-page');
     expect(userPage).toBeInTheDocument();
+  });
+});
+
+describe('Login', () => {
+  it('redirects to homepage after successful login', async () => {
+    setup('/login');
+    const emailInput = screen.getByLabelText('E-mail');
+    const passwordInput = screen.getByLabelText('Password');
+    const loginButton = screen.getByRole('button', { name: /login/i });
+
+    userEvent.type(emailInput, 'user5@mail.com');
+    userEvent.type(passwordInput, 'P4ssword');
+    userEvent.click(loginButton);
+
+    const homePage = await screen.findByTestId('home-page');
+    expect(homePage).toBeInTheDocument();
   });
 });
 

@@ -4,6 +4,7 @@ import { withTranslation } from 'react-i18next';
 import { signUp } from '../api/apiCalls';
 import Alert from '../components/Alert';
 import Spinner from '../components/Spinner';
+import ButtonWithProgress from '../components/ButtonWithProgress';
 
 class SignUpPage extends React.Component<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -149,7 +150,7 @@ class SignUpPage extends React.Component<
                 />
               </div> */}
               <div className="text-center">
-                <button
+                {/* <button
                   disabled={disabled || apiProgress}
                   onClick={this.submit}
                   className="btn btn-primary"
@@ -163,7 +164,14 @@ class SignUpPage extends React.Component<
                     <Spinner />
                   )}
                   {t('signUp')}
-                </button>
+                </button> */}
+                <ButtonWithProgress
+                  disabled={disabled}
+                  apiProgress={apiProgress}
+                  onClick={this.submit}
+                >
+                  {t('signUp')}
+                </ButtonWithProgress>
               </div>
             </div>
           </form>

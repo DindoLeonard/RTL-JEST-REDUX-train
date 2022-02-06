@@ -50,7 +50,7 @@ function App(): React.ReactElement {
       </nav>
       <div className="container pt-3">
         <Routes>
-          <Route path="/*" element={<HomePage />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/user/:id" element={<UserPage />} />

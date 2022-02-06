@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { login } from '../api/apiCalls';
 import Alert from '../components/Alert';
+import ButtonWithProgress from '../components/ButtonWithProgress';
 import Input from '../components/Input';
 import Spinner from '../components/Spinner';
 
@@ -11,6 +13,8 @@ const LoginPage = (): React.ReactElement => {
   const [apiProgress, setApiProgress] = useState<boolean>(false);
   const [failMessage, setFailMessage] = useState<undefined | string>(undefined);
   const { t } = useTranslation();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setFailMessage(undefined);
@@ -27,6 +31,8 @@ const LoginPage = (): React.ReactElement => {
         email: email as string,
         password: password as string,
       });
+
+      navigate('/');
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -66,14 +72,21 @@ const LoginPage = (): React.ReactElement => {
           {failMessage && <Alert type="danger">{failMessage}</Alert>}
 
           <div className="text-center">
-            <button
+            {/* <button
               disabled={disabled || apiProgress}
               className="btn btn-primary"
               onClick={submit}
             >
               {apiProgress && <Spinner />}
               {t('login')}
-            </button>
+            </button> */}
+            <ButtonWithProgress
+              disabled={disabled}
+              apiProgress={apiProgress}
+              onClick={submit}
+            >
+              {t('login')}
+            </ButtonWithProgress>
           </div>
         </div>
       </form>
