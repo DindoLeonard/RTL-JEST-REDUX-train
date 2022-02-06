@@ -5,7 +5,7 @@ import { login } from '../api/apiCalls';
 import Alert from '../components/Alert';
 import ButtonWithProgress from '../components/ButtonWithProgress';
 import Input from '../components/Input';
-import Spinner from '../components/Spinner';
+// import Spinner from '../components/Spinner';
 
 const LoginPage = (): React.ReactElement => {
   const [email, setEmail] = useState<undefined | string>(undefined);
