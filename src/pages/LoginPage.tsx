@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { login } from '../api/apiCalls';
 import Alert from '../components/Alert';
 import Input from '../components/Input';
@@ -9,6 +10,7 @@ const LoginPage = (): React.ReactElement => {
   const [password, setPassword] = useState<undefined | string>(undefined);
   const [apiProgress, setApiProgress] = useState<boolean>(false);
   const [failMessage, setFailMessage] = useState<undefined | string>(undefined);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setFailMessage(undefined);
@@ -42,18 +44,18 @@ const LoginPage = (): React.ReactElement => {
     >
       <form className="card ">
         <div className="card-header">
-          <h1 className="text-center">Login</h1>
+          <h1 className="text-center">{t('login')}</h1>
         </div>
         <div className="card-body">
           <Input
-            label="E-mail"
+            label={t('email')}
             id="email"
             onChange={(e) => {
               setEmail(e.target.value);
             }}
           />
           <Input
-            label="Password"
+            label={t('password')}
             id="password"
             type="password"
             onChange={(e) => {
@@ -70,7 +72,7 @@ const LoginPage = (): React.ReactElement => {
               onClick={submit}
             >
               {apiProgress && <Spinner />}
-              Login
+              {t('login')}
             </button>
           </div>
         </div>

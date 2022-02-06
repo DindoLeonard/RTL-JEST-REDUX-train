@@ -7,12 +7,17 @@ type IProps = {
   password: string;
 };
 
+axios.interceptors.request.use((request) => {
+  request.headers = {
+    ...request.headers,
+    'Accept-Language': i18n.language,
+  };
+
+  return request;
+});
+
 export const signUp = (body: IProps) => {
-  return axios.post('/api/1.0/users', body, {
-    headers: {
-      'Accept-Language': i18n.language,
-    },
-  });
+  return axios.post('/api/1.0/users', body);
 };
 
 export const activate = (token: string) => {
