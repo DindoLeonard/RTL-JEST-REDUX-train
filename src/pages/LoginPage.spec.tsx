@@ -1,12 +1,13 @@
 /* eslint-disable testing-library/no-node-access */
 /* eslint-disable testing-library/no-container */
 import React from 'react';
-import {
-  act,
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from '@testing-library/react';
+// import {
+//   act,
+//   render,
+//   screen,
+//   waitForElementToBeRemoved,
+// } from '@testing-library/react';
+import { act, render, screen, waitForElementToBeRemoved } from '../test/setup';
 import LoginPage from './LoginPage';
 import userEvent from '@testing-library/user-event';
 import { setupServer } from 'msw/node';
@@ -56,14 +57,14 @@ beforeEach(() => {
 describe('Login Page', () => {
   describe('Layout', () => {
     it('has header', () => {
-      // render(<LoginPage />);
-      render(
-        <MemoryRouter initialEntries={['/login']}>
-          <Routes>
-            <Route path={'/login'} element={<LoginPage />} />
-          </Routes>
-        </MemoryRouter>
-      );
+      render(<LoginPage />);
+      // render(
+      //   <MemoryRouter initialEntries={['/login']}>
+      //     <Routes>
+      //       <Route path={'/login'} element={<LoginPage />} />
+      //     </Routes>
+      //   </MemoryRouter>
+      // );
 
       const header = screen.queryByRole('heading', { name: /login/i });
 
@@ -71,67 +72,67 @@ describe('Login Page', () => {
     });
 
     it('has email input', () => {
-      // render(<LoginPage />);
-      render(
-        <MemoryRouter initialEntries={['/login']}>
-          <Routes>
-            <Route path={'/login'} element={<LoginPage />} />
-          </Routes>
-        </MemoryRouter>
-      );
+      render(<LoginPage />);
+      // render(
+      //   <MemoryRouter initialEntries={['/login']}>
+      //     <Routes>
+      //       <Route path={'/login'} element={<LoginPage />} />
+      //     </Routes>
+      //   </MemoryRouter>
+      // );
 
       const input = screen.getByLabelText(/e-mail/i);
       expect(input).toBeInTheDocument();
     });
 
     it('has password input', () => {
-      // render(<LoginPage  />);
-      render(
-        <MemoryRouter initialEntries={['/login']}>
-          <Routes>
-            <Route path={'/login'} element={<LoginPage />} />
-          </Routes>
-        </MemoryRouter>
-      );
+      render(<LoginPage />);
+      // render(
+      //   <MemoryRouter initialEntries={['/login']}>
+      //     <Routes>
+      //       <Route path={'/login'} element={<LoginPage />} />
+      //     </Routes>
+      //   </MemoryRouter>
+      // );
       const input = screen.getByLabelText('Password');
       expect(input).toBeInTheDocument();
     });
 
     it('has password type for input', () => {
-      // render(<LoginPage  />);
-      render(
-        <MemoryRouter initialEntries={['/login']}>
-          <Routes>
-            <Route path={'/login'} element={<LoginPage />} />
-          </Routes>
-        </MemoryRouter>
-      );
+      render(<LoginPage />);
+      // render(
+      //   <MemoryRouter initialEntries={['/login']}>
+      //     <Routes>
+      //       <Route path={'/login'} element={<LoginPage />} />
+      //     </Routes>
+      //   </MemoryRouter>
+      // );
       const input = screen.getByLabelText('Password') as HTMLInputElement;
       expect(input.type).toBe('password');
     });
 
     it('has Login button', () => {
-      // render(<LoginPage  />);
-      render(
-        <MemoryRouter initialEntries={['/login']}>
-          <Routes>
-            <Route path={'/login'} element={<LoginPage />} />
-          </Routes>
-        </MemoryRouter>
-      );
+      render(<LoginPage />);
+      // render(
+      //   <MemoryRouter initialEntries={['/login']}>
+      //     <Routes>
+      //       <Route path={'/login'} element={<LoginPage />} />
+      //     </Routes>
+      //   </MemoryRouter>
+      // );
       const button = screen.queryByRole('button', { name: /login/i });
       expect(button).toBeInTheDocument();
     });
 
     it('disables the button initially', () => {
-      // render(<LoginPage  />);
-      render(
-        <MemoryRouter initialEntries={['/login']}>
-          <Routes>
-            <Route path={'/login'} element={<LoginPage />} />
-          </Routes>
-        </MemoryRouter>
-      );
+      render(<LoginPage />);
+      // render(
+      //   <MemoryRouter initialEntries={['/login']}>
+      //     <Routes>
+      //       <Route path={'/login'} element={<LoginPage />} />
+      //     </Routes>
+      //   </MemoryRouter>
+      // );
       const button = screen.queryByRole('button', { name: /login/i });
       expect(button).toBeDisabled();
     });
@@ -142,14 +143,14 @@ describe('Login Page', () => {
     let emailInput: HTMLElement;
     let passwordInput: HTMLElement;
     const setup = () => {
-      // render(<LoginPage  />);
-      render(
-        <MemoryRouter initialEntries={['/login']}>
-          <Routes>
-            <Route path={'/login'} element={<LoginPage />} />
-          </Routes>
-        </MemoryRouter>
-      );
+      render(<LoginPage />);
+      // render(
+      //   <MemoryRouter initialEntries={['/login']}>
+      //     <Routes>
+      //       <Route path={'/login'} element={<LoginPage />} />
+      //     </Routes>
+      //   </MemoryRouter>
+      // );
 
       emailInput = screen.getByLabelText('E-mail');
       passwordInput = screen.getByLabelText('Password');
@@ -242,21 +243,22 @@ describe('Login Page', () => {
       //     <LanguageSelector />
       //   </>
       // );
-      render(
-        <MemoryRouter initialEntries={['/login']}>
-          <Routes>
-            <Route
-              path={'/login'}
-              element={
-                <>
-                  <LoginPage />
-                  <LanguageSelector />
-                </>
-              }
-            />
-          </Routes>
-        </MemoryRouter>
-      );
+      // render(
+      //   <MemoryRouter initialEntries={['/login']}>
+      //     <Routes>
+      //       <Route
+      //         path={'/login'}
+      //         element={
+      //           <>
+      //             <LoginPage />
+      //             <LanguageSelector />
+      //           </>
+      //         }
+      //       />
+      //     </Routes>
+      //   </MemoryRouter>
+      // );
+      render(<LoginPage />);
 
       filipinoToggle = screen.getByTitle('Filipino');
       englishToggle = screen.getByTitle('English');

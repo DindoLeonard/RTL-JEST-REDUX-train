@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+// import { render, screen } from '@testing-library/react';
+import { render, screen } from '../test/setup';
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 import UserList from './UserList';
@@ -99,12 +100,13 @@ beforeEach(() => {
 });
 
 const setup = () => {
-  render(
-    <BrowserRouter>
-      <UserList />
-      <LanguageSelector />
-    </BrowserRouter>
-  );
+  // render(
+  //   <BrowserRouter>
+  //     <UserList />
+  //     <LanguageSelector />
+  //   </BrowserRouter>
+  // );
+  render(<UserList />);
 };
 
 describe('User List', () => {

@@ -3,10 +3,20 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './locale/i18n';
+import AuthContextWrapper from './state/AuthContextWrapper';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from './store/store';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <AuthContextWrapper>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </AuthContextWrapper>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );

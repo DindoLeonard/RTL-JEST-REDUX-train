@@ -1,9 +1,12 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+// import { render, screen } from '@testing-library/react';
+import { render, screen } from './test/setup';
 import App from './App';
 import userEvent from '@testing-library/user-event';
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+// import AuthContextWrapper from './state/AuthContextWrapper';
+// import { BrowserRouter } from 'react-router-dom';
 
 // initialize mock server
 const server = setupServer(
@@ -63,6 +66,13 @@ beforeEach(() => {
 
 const setup = (path: string) => {
   window.history.pushState({}, '', path);
+  // render(
+  //   <BrowserRouter>
+  //     <AuthContextWrapper>
+  //       <App />
+  //     </AuthContextWrapper>
+  //   </BrowserRouter>
+  // );
   render(<App />);
 };
 
@@ -195,12 +205,13 @@ describe('Login', () => {
   });
 
   it('displays My Profile link on navbar after successful login', async () => {
-    setup('/login');
-
     const myProfileLinkBeforeLogin = screen.queryByRole('link', {
       name: 'My Profile',
     });
+
     expect(myProfileLinkBeforeLogin).not.toBeInTheDocument();
+
+    setup('/login');
 
     const emailInput = screen.getByLabelText('E-mail');
     const passwordInput = screen.getByLabelText('Password');

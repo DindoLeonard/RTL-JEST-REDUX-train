@@ -1,12 +1,19 @@
 import React from 'react';
 import SignUpPage from './SignUpPage';
+// import {
+//   act,
+//   render,
+//   screen,
+//   waitFor,
+//   waitForElementToBeRemoved,
+// } from '@testing-library/react';
 import {
   act,
   render,
   screen,
   waitFor,
   waitForElementToBeRemoved,
-} from '@testing-library/react';
+} from '../test/setup';
 import userEvent from '@testing-library/user-event';
 // import axios from 'axios';
 import { setupServer } from 'msw/node';
@@ -367,7 +374,6 @@ describe('Sign Up Page', () => {
       render(
         <>
           <SignUpPage />
-          <LanguageSelector />
         </>
       );
 

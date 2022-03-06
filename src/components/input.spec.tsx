@@ -1,6 +1,7 @@
 /* eslint-disable testing-library/no-node-access */
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+// import { render, screen } from '@testing-library/react';
+import { render, screen } from '../test/setup';
 import Input from './Input';
 
 it('has is-invalid class for input when help is set', () => {

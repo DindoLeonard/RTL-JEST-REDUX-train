@@ -1,11 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../api/apiCalls';
-import { AuthContext } from '../App';
 import Alert from '../components/Alert';
 import ButtonWithProgress from '../components/ButtonWithProgress';
 import Input from '../components/Input';
+import { setIsLoggedIn } from '../store/authSlice';
+import { useAppDispatch } from '../store/hooks';
 // import Spinner from '../components/Spinner';
 
 // type IProps = {
@@ -20,13 +21,15 @@ import Input from '../components/Input';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const LoginPage = (): React.ReactElement => {
+  const dispatch = useAppDispatch();
+
   const [email, setEmail] = useState<undefined | string>(undefined);
   const [password, setPassword] = useState<undefined | string>(undefined);
   const [apiProgress, setApiProgress] = useState<boolean>(false);
   const [failMessage, setFailMessage] = useState<undefined | string>(undefined);
   const { t } = useTranslation();
 
-  const auth = useContext(AuthContext);
+  // const auth = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -52,10 +55,11 @@ const LoginPage = (): React.ReactElement => {
       // };
 
       navigate('/');
-      auth?.onLoginSuccess({
-        isLoggedIn: true,
-        id: response.data.id,
-      });
+      // auth?.onLoginSuccess({
+      //   isLoggedIn: true,
+      //   id: response.data.id,
+      // });
+      dispatch(setIsLoggedIn({ isLoggedIn: true, id: response.data.id }));
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {

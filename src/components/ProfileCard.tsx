@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { AuthContext } from '../App';
 import defaultImageProfile from '../assets/profile.png';
+import { AuthContext } from '../state/AuthContextWrapper';
 
 type IProps = {
   user: { id: number; username: string; email: string; image: string | null };

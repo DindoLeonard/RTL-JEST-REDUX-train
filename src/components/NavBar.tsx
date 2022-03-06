@@ -1,13 +1,17 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../App';
 import logo from '../assets/hoaxify.png';
+import { useAppSelector } from '../store/hooks';
 
 const NavBar = (): React.ReactElement => {
   const { t } = useTranslation();
 
-  const auth = useContext(AuthContext);
+  const auth = useAppSelector((state) => {
+    return state.auth;
+  });
+
+  // const auth = useContext(AuthContext);
 
   return (
     <nav className="navbar navbar-expand navbar-light bg-light shadow-sm">
@@ -26,7 +30,7 @@ const NavBar = (): React.ReactElement => {
             Hoaxify
           </a> */}
         <ul className="navbar-nav">
-          {auth && !auth.isLoggedIn && (
+          {!auth.isLoggedIn && (
             <>
               <Link className="nav-link" to="/signup">
                 {t('signUp')}
@@ -36,7 +40,7 @@ const NavBar = (): React.ReactElement => {
               </Link>
             </>
           )}
-          {auth && auth.isLoggedIn && (
+          {auth.isLoggedIn && (
             <Link className="nav-link" to={`/user/${auth.id}`}>
               My Profile
             </Link>
