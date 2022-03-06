@@ -5,9 +5,7 @@ import Alert from '../components/Alert';
 import ProfileCard from '../components/ProfileCard';
 import Spinner from '../components/Spinner';
 
-const UserPage = (props: {
-  auth?: { isLoggedIn: boolean; id: string };
-}): React.ReactElement => {
+const UserPage = (): React.ReactElement => {
   const { id } = useParams();
 
   const [user, setUser] = useState<{

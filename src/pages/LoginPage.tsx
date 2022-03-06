@@ -8,18 +8,18 @@ import ButtonWithProgress from '../components/ButtonWithProgress';
 import Input from '../components/Input';
 // import Spinner from '../components/Spinner';
 
-type IProps = {
-  onLoginSuccess: ({
-    isLoggedIn,
-    id,
-  }: {
-    isLoggedIn: boolean;
-    id: string;
-  }) => void;
-};
+// type IProps = {
+//   onLoginSuccess: ({
+//     isLoggedIn,
+//     id,
+//   }: {
+//     isLoggedIn: boolean;
+//     id: string;
+//   }) => void;
+// };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const LoginPage = (_props?: IProps): React.ReactElement => {
+const LoginPage = (): React.ReactElement => {
   const [email, setEmail] = useState<undefined | string>(undefined);
   const [password, setPassword] = useState<undefined | string>(undefined);
   const [apiProgress, setApiProgress] = useState<boolean>(false);

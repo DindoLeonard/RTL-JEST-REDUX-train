@@ -60,10 +60,7 @@ describe('Login Page', () => {
       render(
         <MemoryRouter initialEntries={['/login']}>
           <Routes>
-            <Route
-              path={'/login'}
-              element={<LoginPage onLoginSuccess={() => null} />}
-            />
+            <Route path={'/login'} element={<LoginPage />} />
           </Routes>
         </MemoryRouter>
       );
@@ -78,10 +75,7 @@ describe('Login Page', () => {
       render(
         <MemoryRouter initialEntries={['/login']}>
           <Routes>
-            <Route
-              path={'/login'}
-              element={<LoginPage onLoginSuccess={() => null} />}
-            />
+            <Route path={'/login'} element={<LoginPage />} />
           </Routes>
         </MemoryRouter>
       );
@@ -91,14 +85,11 @@ describe('Login Page', () => {
     });
 
     it('has password input', () => {
-      // render(<LoginPage onLoginSuccess={() => null} />);
+      // render(<LoginPage  />);
       render(
         <MemoryRouter initialEntries={['/login']}>
           <Routes>
-            <Route
-              path={'/login'}
-              element={<LoginPage onLoginSuccess={() => null} />}
-            />
+            <Route path={'/login'} element={<LoginPage />} />
           </Routes>
         </MemoryRouter>
       );
@@ -107,14 +98,11 @@ describe('Login Page', () => {
     });
 
     it('has password type for input', () => {
-      // render(<LoginPage onLoginSuccess={() => null} />);
+      // render(<LoginPage  />);
       render(
         <MemoryRouter initialEntries={['/login']}>
           <Routes>
-            <Route
-              path={'/login'}
-              element={<LoginPage onLoginSuccess={() => null} />}
-            />
+            <Route path={'/login'} element={<LoginPage />} />
           </Routes>
         </MemoryRouter>
       );
@@ -123,14 +111,11 @@ describe('Login Page', () => {
     });
 
     it('has Login button', () => {
-      // render(<LoginPage onLoginSuccess={() => null} />);
+      // render(<LoginPage  />);
       render(
         <MemoryRouter initialEntries={['/login']}>
           <Routes>
-            <Route
-              path={'/login'}
-              element={<LoginPage onLoginSuccess={() => null} />}
-            />
+            <Route path={'/login'} element={<LoginPage />} />
           </Routes>
         </MemoryRouter>
       );
@@ -139,14 +124,11 @@ describe('Login Page', () => {
     });
 
     it('disables the button initially', () => {
-      // render(<LoginPage onLoginSuccess={() => null} />);
+      // render(<LoginPage  />);
       render(
         <MemoryRouter initialEntries={['/login']}>
           <Routes>
-            <Route
-              path={'/login'}
-              element={<LoginPage onLoginSuccess={() => null} />}
-            />
+            <Route path={'/login'} element={<LoginPage />} />
           </Routes>
         </MemoryRouter>
       );
@@ -160,14 +142,11 @@ describe('Login Page', () => {
     let emailInput: HTMLElement;
     let passwordInput: HTMLElement;
     const setup = () => {
-      // render(<LoginPage onLoginSuccess={() => null} />);
+      // render(<LoginPage  />);
       render(
         <MemoryRouter initialEntries={['/login']}>
           <Routes>
-            <Route
-              path={'/login'}
-              element={<LoginPage onLoginSuccess={() => null} />}
-            />
+            <Route path={'/login'} element={<LoginPage />} />
           </Routes>
         </MemoryRouter>
       );
@@ -259,7 +238,7 @@ describe('Login Page', () => {
     const setup = () => {
       // render(
       //   <>
-      //     <LoginPage onLoginSuccess={() => null} />
+      //     <LoginPage  />
       //     <LanguageSelector />
       //   </>
       // );
@@ -270,7 +249,7 @@ describe('Login Page', () => {
               path={'/login'}
               element={
                 <>
-                  <LoginPage onLoginSuccess={() => null} />
+                  <LoginPage />
                   <LanguageSelector />
                 </>
               }

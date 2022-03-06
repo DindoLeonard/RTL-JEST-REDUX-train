@@ -47,22 +47,13 @@ function App(): React.ReactElement {
       }}
     >
       <BrowserRouter>
-        <NavBar auth={auth} />
+        <NavBar />
         <div className="container pt-3">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/signup" element={<SignUpPage />} />
-            <Route
-              path="/login"
-              element={
-                <LoginPage
-                  onLoginSuccess={(prop) => {
-                    setAuth(prop);
-                  }}
-                />
-              }
-            />
-            <Route path="/user/:id" element={<UserPage auth={auth} />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/user/:id" element={<UserPage />} />
             <Route
               path="/activate/:token"
               element={<AccountActivationPage />}
