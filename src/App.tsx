@@ -1,16 +1,33 @@
-import React from 'react';
+import React, { useState, createContext } from 'react';
 import LanguageSelector from './components/LanguageSelector';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import UserPage from './pages/UserPage';
-import { useTranslation } from 'react-i18next';
-import logo from './assets/hoaxify.png';
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AccountActivationPage from './pages/AccountActivationPage';
+import NavBar from './components/NavBar';
+
+export const AuthContext = createContext<
+  | {
+      isLoggedIn: boolean;
+      id: string;
+      onLoginSuccess: React.Dispatch<
+        React.SetStateAction<{
+          isLoggedIn: boolean;
+          id: string;
+        }>
+      >;
+    }
+  | undefined
+>(undefined);
 
 function App(): React.ReactElement {
-  const { t } = useTranslation();
+  const [auth, setAuth] = useState<{
+    isLoggedIn: boolean;
+    id: string;
+  }>({ isLoggedIn: false, id: '' });
+
   // const [path, setPath] = useState<string>(window.location.pathname);
 
   // const onClickLink = (event: NewType) => {
@@ -22,47 +39,43 @@ function App(): React.ReactElement {
   // };
 
   return (
-    <BrowserRouter>
-      <nav className="navbar navbar-expand navbar-light bg-light shadow-sm">
-        <div className="container">
-          <Link className="navbar-brand" to="/" title="Home">
-            <img src={logo} alt="Hoaxify" width="60" />
-            Hoaxify
-          </Link>
-          {/* <a
-            className="navbar-brand"
-            href="/"
-            title="Home"
-            onClick={onClickLink}
-          >
-            <img src={logo} alt="Hoaxify" width="60" />
-            Hoaxify
-          </a> */}
-          <ul className="navbar-nav">
-            <Link className="nav-link" to="/signup">
-              {t('signUp')}
-            </Link>
-            <Link className="nav-link" to="/login">
-              Login
-            </Link>
-          </ul>
-        </div>
-      </nav>
-      <div className="container pt-3">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/user/:id" element={<UserPage />} />
-          <Route path="/activate/:token" element={<AccountActivationPage />} />
-        </Routes>
-        {/* {path === '/' && <HomePage />}
+    <AuthContext.Provider
+      value={{
+        isLoggedIn: auth.isLoggedIn,
+        id: auth.id,
+        onLoginSuccess: setAuth,
+      }}
+    >
+      <BrowserRouter>
+        <NavBar auth={auth} />
+        <div className="container pt-3">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+            <Route
+              path="/login"
+              element={
+                <LoginPage
+                  onLoginSuccess={(prop) => {
+                    setAuth(prop);
+                  }}
+                />
+              }
+            />
+            <Route path="/user/:id" element={<UserPage auth={auth} />} />
+            <Route
+              path="/activate/:token"
+              element={<AccountActivationPage />}
+            />
+          </Routes>
+          {/* {path === '/' && <HomePage />}
         {path === '/signup' && <SignUpPage />}
         {path === '/login' && <LoginPage />}
         {path.startsWith('/user/') && <UserPage />} */}
-        <LanguageSelector />
-      </div>
-    </BrowserRouter>
+          <LanguageSelector />
+        </div>
+      </BrowserRouter>
+    </AuthContext.Provider>
   );
 }
 

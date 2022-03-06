@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AuthContext } from '../App';
 import defaultImageProfile from '../assets/profile.png';
 
 type IProps = {
@@ -7,6 +8,8 @@ type IProps = {
 
 const ProfileCard = (props: IProps): React.ReactElement => {
   const { user } = props;
+  const auth = useContext(AuthContext);
+
   return (
     <div className="card">
       <div className="card-header">
@@ -21,6 +24,7 @@ const ProfileCard = (props: IProps): React.ReactElement => {
       <div className="card-body">
         <h3>{user.username}</h3>
       </div>
+      {auth && user.id === Number(auth.id) && <button>Edit</button>}
     </div>
   );
 };

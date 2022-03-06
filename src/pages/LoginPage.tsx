@@ -1,18 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../api/apiCalls';
+import { AuthContext } from '../App';
 import Alert from '../components/Alert';
 import ButtonWithProgress from '../components/ButtonWithProgress';
 import Input from '../components/Input';
 // import Spinner from '../components/Spinner';
 
-const LoginPage = (): React.ReactElement => {
+type IProps = {
+  onLoginSuccess: ({
+    isLoggedIn,
+    id,
+  }: {
+    isLoggedIn: boolean;
+    id: string;
+  }) => void;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const LoginPage = (_props?: IProps): React.ReactElement => {
   const [email, setEmail] = useState<undefined | string>(undefined);
   const [password, setPassword] = useState<undefined | string>(undefined);
   const [apiProgress, setApiProgress] = useState<boolean>(false);
   const [failMessage, setFailMessage] = useState<undefined | string>(undefined);
   const { t } = useTranslation();
+
+  const auth = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -27,12 +41,21 @@ const LoginPage = (): React.ReactElement => {
       e.preventDefault();
       setApiProgress(true);
 
-      await login({
+      const response = await login({
         email: email as string,
         password: password as string,
       });
 
+      // const auth = {
+      //   isLoggedIn: true,
+      //   id: response.data.id as string,
+      // };
+
       navigate('/');
+      auth?.onLoginSuccess({
+        isLoggedIn: true,
+        id: response.data.id,
+      });
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
