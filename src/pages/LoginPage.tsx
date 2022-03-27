@@ -59,7 +59,12 @@ const LoginPage = (): React.ReactElement => {
       //   isLoggedIn: true,
       //   id: response.data.id,
       // });
-      dispatch(setIsLoggedIn({ isLoggedIn: true, id: response.data.id }));
+      dispatch(
+        setIsLoggedIn({
+          ...response.data,
+          header: `Bearer ${response.data.token}`,
+        })
+      );
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {

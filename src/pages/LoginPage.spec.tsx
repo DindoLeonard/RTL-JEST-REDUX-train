@@ -17,6 +17,7 @@ import i18n from '../locale/i18n';
 import en from '../locale/en.json';
 import fil from '../locale/fil.json';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import storage from '../store/storage';
 
 let requestBody: { email: string; password: string };
 let count: number;
@@ -52,6 +53,18 @@ afterAll(() => {
 beforeEach(() => {
   count = 0;
   server.resetHandlers();
+});
+
+const loginSuccess = rest.post('/api/1.0/auth', (req, res, ctx) => {
+  return res(
+    ctx.status(200),
+    ctx.json({
+      id: 5,
+      username: 'user5',
+      image: null,
+      token: 'abcdefgh',
+    })
+  );
 });
 
 describe('Login Page', () => {
@@ -142,7 +155,7 @@ describe('Login Page', () => {
     let button: HTMLElement;
     let emailInput: HTMLElement;
     let passwordInput: HTMLElement;
-    const setup = () => {
+    const setup = (email = 'user100@mail.com') => {
       render(<LoginPage />);
       // render(
       //   <MemoryRouter initialEntries={['/login']}>
@@ -157,7 +170,7 @@ describe('Login Page', () => {
       expect(emailInput).toBeInTheDocument();
       expect(passwordInput).toBeInTheDocument();
 
-      userEvent.type(emailInput, 'user100@mail.com');
+      userEvent.type(emailInput, email);
       userEvent.type(passwordInput, 'P4ssword');
 
       button = screen.getByRole('button', { name: 'Login' });
@@ -229,6 +242,44 @@ describe('Login Page', () => {
 
       userEvent.type(passwordInput, 'P4ssword');
       expect(errorMessage).not.toBeInTheDocument();
+    });
+
+    it('stores id, username and image in storage', async () => {
+      server.use(loginSuccess);
+
+      setup('user5@mail.com');
+
+      userEvent.click(button);
+
+      const spinner = screen.getByTestId('spinner-loading');
+
+      await waitForElementToBeRemoved(spinner);
+
+      // check storage
+      const storedState = storage.getItem('auth');
+
+      const objectFields = Object.keys(storedState);
+
+      expect(objectFields.includes('id')).toBeTruthy();
+      expect(objectFields.includes('username')).toBeTruthy();
+      expect(objectFields.includes('image')).toBeTruthy();
+    });
+
+    it('stores authorization header value in storage', async () => {
+      server.use(loginSuccess);
+
+      setup('user5@mail.com');
+
+      userEvent.click(button);
+
+      const spinner = screen.getByTestId('spinner-loading');
+
+      await waitForElementToBeRemoved(spinner);
+
+      // check storage
+      const storedState = storage.getItem('auth');
+
+      expect(storedState.header).toBe('Bearer abcdefgh');
     });
   });
 

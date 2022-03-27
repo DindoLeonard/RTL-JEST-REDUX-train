@@ -255,13 +255,9 @@ describe('Login', () => {
     // const localStorageValue = localStorage.getItem('auth ');
 
     await waitFor(() => {
-      const localStorageValue = localStorage.getItem('auth');
-      const state = JSON.parse(localStorageValue as string) as {
-        isLoggedIn: boolean;
-        id: number;
-      };
+      const localStorageValue = storage.getItem('auth');
 
-      expect(state.isLoggedIn).toBeTruthy();
+      expect(localStorageValue.isLoggedIn).toBeTruthy();
     });
   });
 
