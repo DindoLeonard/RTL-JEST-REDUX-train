@@ -1,10 +1,11 @@
 import React from 'react';
 // import { render, screen } from '@testing-library/react';
-import { render, screen } from './test/setup';
+import { render, screen, waitFor } from './test/setup';
 import App from './App';
 import userEvent from '@testing-library/user-event';
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import storage from './store/storage';
 // import AuthContextWrapper from './state/AuthContextWrapper';
 // import { BrowserRouter } from 'react-router-dom';
 
@@ -243,6 +244,34 @@ describe('Login', () => {
 
     const username = await screen.findByText('user5');
     expect(username).toBeInTheDocument();
+  });
+
+  // LOGIN
+  it('stored logged in state in the local storage', async () => {
+    setupLoggedIn();
+    const homePage = await screen.findByTestId('home-page');
+    expect(homePage).toBeInTheDocument();
+
+    // const localStorageValue = localStorage.getItem('auth ');
+
+    await waitFor(() => {
+      const localStorageValue = localStorage.getItem('auth');
+      const state = JSON.parse(localStorageValue as string) as {
+        isLoggedIn: boolean;
+        id: number;
+      };
+
+      expect(state.isLoggedIn).toBeTruthy();
+    });
+  });
+
+  it('displays layout of logged in state', async () => {
+    storage.setItem<{ isLoggedIn: boolean }>('auth', { isLoggedIn: true });
+    setup('/');
+
+    const myProfileLink = screen.getByRole('link', { name: 'My Profile' });
+
+    expect(myProfileLink).toBeInTheDocument();
   });
 });
 

@@ -1,18 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import storage from './storage';
 
 interface AuthInterface {
   isLoggedIn: boolean;
   id: string;
 }
 
-const initialState: AuthInterface = {
-  isLoggedIn: false,
-  id: '',
-};
+// const isLoggedIn = JSON.parse(localStorage.getItem('auth') as string);
+const initialState = storage.getItem('auth') as AuthInterface;
 
 export const authSlice = createSlice({
   name: 'auth',
-  initialState,
+  initialState: initialState || { isLoggedIn: false, id: '' },
   reducers: {
     setIsLoggedIn: (
       state,
